@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Edit Blog - Blogify</title>
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+    
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">Edit Blog</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="/blog/edit/<%= blog._id %>" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Blog Title *</label>
+                                <input type="text" class="form-control" id="title" name="title" value="<%= blog.title %>" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="coverImage" class="form-label">Cover Image</label>
+                                <% if (blog.coverImageURL) { %>
+                                    <div class="mb-2">
+                                        <img src="<%= blog.coverImageURL %>" alt="Current cover" style="max-width: 200px; height: auto;" class="img-thumbnail">
+                                        <p class="text-muted small">Current cover image</p>
+                                    </div>
+                                <% } %>
+                                <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
+                                <div class="form-text">Upload a new image to replace the current one (optional). Max size: 5MB</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="body" class="form-label">Blog Content *</label>
+                                <textarea class="form-control" id="body" name="body" rows="10" required><%= blog.body %></textarea>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/blog/<%= blog._id %>" class="btn btn-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Update Blog</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <%- include('./partials/scripts') %>
+</body>
+</html> 

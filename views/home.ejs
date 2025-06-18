@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Home Page</title>
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+    <div class="container mt-3">
+        <h1 class="mb-4">Welcome to Blogify</h1>
+        
+        <% if (locals.user) { %>
+            <div class="alert alert-success" role="alert">
+                Welcome back, <%= user.full_name %>!
+            </div>
+        <% } %>
+        
+        <div class="row">
+            <% if (blogs && blogs.length > 0) { %>
+                <% blogs.forEach(blog => { %>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <% if (blog.coverImageURL) { %>
+                                <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="Blog Cover" style="height: 200px; object-fit: cover;">
+                            <% } %>
+                            <div class="card-body">
+                                <h5 class="card-title"><%= blog.title %></h5>
+                                <p class="card-text">
+                                    <%= blog.body.length > 150 ? blog.body.substring(0, 150) + '...' : blog.body %>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        By <%= blog.createdBy ? blog.createdBy.full_name : 'Unknown' %> 
+                                        on <%= new Date(blog.createdAt).toLocaleDateString() %>
+                                        <% if (blog.comments && blog.comments.length > 0) { %>
+                                            • <%= blog.comments.length %> comment<%= blog.comments.length !== 1 ? 's' : '' %>
+                                        <% } %>
+                                    </small>
+                                </p>
+                                <a href="/blog/<%= blog._id %>" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        No blogs found. Be the first to create one!
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <%- include('./partials/scripts') %>
+</body>
+</html>

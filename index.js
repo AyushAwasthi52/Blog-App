@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const router = require('./routes/user');
@@ -8,14 +9,14 @@ const {checkforAuthenticationCookie} = require('./middleware/authentication');
 const Blog = require('./models/blog');
 
 const app = express();
-const PORT = 8001;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.urlencoded({extended: false}));
 app.use(cookieparser());
 app.use(checkforAuthenticationCookie('token'));
 app.use(express.static(path.resolve('./public')));
 
-mongoose.connect('mongodb://127.0.0.1:27017/blog-data').then((e) => console.log('Mongoose Connected'));
+mongoose.connect(process.env.MONGO_URL).then((e) => console.log('Mongoose Connected'));
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve('./views'));
